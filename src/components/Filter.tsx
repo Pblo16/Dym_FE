@@ -13,7 +13,7 @@ export function Filter({ sortOrder, setSortOrder, title }: FilterProps) {
     return (
         <>
             <div className="hidden md:block mb-4">
-                {title && <h3 className="mb-2 font-semibold text-lg">{title}</h3>}z
+                {title && <h3 className="mb-2 font-semibold text-lg">{title}</h3>}
                 <RadioGroup value={sortOrder} onValueChange={(value) => setSortOrder(value)}>
                     <div className="flex items-center space-x-2">
                         <RadioGroupItem value="createdAt:desc" id="recent-desktop" />

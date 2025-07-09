@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Filter } from "@/components/Filter";
 
 
-
 interface ProductsApiResponse {
     data: Product[];
     meta: {
@@ -26,12 +25,10 @@ interface ProductsApiResponse {
 
 function Products() {
     const [sortOrder, setSortOrder] = useState<string>("createdAt:desc");
-    const [limit, setLimit] = useState<number | null>(null);
+    const [limit] = useState<number | null>(null);
     const [data, setData] = useState<Product[] | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        setLoading(true);
         setData(null);
 
         // Use regular fetch instead of the Suspense-based fetchData
@@ -47,11 +44,9 @@ function Products() {
             .then(response => response.json())
             .then((apiResponse: ProductsApiResponse) => {
                 setData(apiResponse.data);
-                setLoading(false);
             })
             .catch(error => {
                 console.error("Error fetching products:", error);
-                setLoading(false);
             });
     }, [sortOrder, limit]);
 
