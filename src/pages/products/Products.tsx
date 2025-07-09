@@ -1,6 +1,4 @@
-import type Product from "@/interfaces/product";
 import { useState } from "react";
-
 import { Filter } from "@/components/Filter";
 import { ProductsGrid } from "@/components/ProductsGrid";
 
