@@ -5,25 +5,10 @@ import { NavLink } from "react-router";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
-const apiData = fetchData("/api/global");
 
+const apiData = fetchData("/api/global");
 export function Navigation() {
-    useEffect(() => {
-        const navbar = document.getElementById("navbar-sticky");
-        if (navbar) {
-            const handleScroll = () => {
-                if (window.scrollY > 50) {
-                    navbar.classList.add("fixed", "top-0", "left-0", "right-0", "z-50", "shadow-md", "backdrop-blur-sm", "bg-white/95", "dark:bg-accent/95");
-                    navbar.classList.remove("bg-white", "dark:bg-accent");
-                } else {
-                    navbar.classList.remove("fixed", "top-0", "left-0", "right-0", "z-50", "shadow-md", "backdrop-blur-sm", "bg-white/95", "dark:bg-accent/95");
-                    navbar.classList.add("bg-white", "dark:bg-accent");
-                }
-            };
-            window.addEventListener("scroll", handleScroll);
-            return () => window.removeEventListener("scroll", handleScroll);
-        }
-    }, []);
+
 
     const apiResponse = apiData.read();
     const data: Global = apiResponse.data;
