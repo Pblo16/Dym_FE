@@ -1,6 +1,5 @@
 import { fetchData } from "@/hooks/fetchData";
 import type Global from "@/interfaces/global";
-import { useEffect } from "react";
 import { NavLink } from "react-router";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";

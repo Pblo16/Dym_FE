@@ -4,8 +4,7 @@ import {
     Card,
     CardContent,
 } from "@/components/ui/card"
-import { AspectRatio } from "@/components/ui/aspect-ratio"
-import { Button } from "@/components/ui/button";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface ProductsApiResponse {
     data: Product[];
