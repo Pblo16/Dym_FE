@@ -2,6 +2,7 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { Menu } from "lucide-react";
 
 interface FilterProps {
     sortOrder: string;
@@ -21,11 +22,11 @@ export function Filter({ sortOrder, setSortOrder, title }: FilterProps) {
                     </div>
                     <div className="flex items-center space-x-2">
                         <RadioGroupItem value="price:asc" id="price-high-desktop" />
-                        <Label htmlFor="price-high-desktop">Precio Mayor a menor</Label>
+                        <Label htmlFor="price-high-desktop">Precio Menor a Mayor</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                         <RadioGroupItem value="price:desc" id="price-low-desktop" />
-                        <Label htmlFor="price-low-desktop">Precio Menor a Mayor</Label>
+                        <Label htmlFor="price-low-desktop">Precio Mayor a Menor</Label>
                     </div>
                 </RadioGroup>
             </div>
@@ -34,7 +35,7 @@ export function Filter({ sortOrder, setSortOrder, title }: FilterProps) {
                 <Sheet>
                     <SheetTrigger asChild>
                         <Button variant="outline" size="icon">
-                            <MenuIcon className="w-6 h-6" />
+                            <Menu className="w-6 h-6" />
                             <span className="sr-only">Toggle navigation menu</span>
                         </Button>
                     </SheetTrigger>
@@ -59,26 +60,5 @@ export function Filter({ sortOrder, setSortOrder, title }: FilterProps) {
             </div>
         </>
 
-    );
-}
-
-function MenuIcon(props: React.SVGProps<SVGSVGElement>) {
-    return (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <line x1="4" x2="20" y1="12" y2="12" />
-            <line x1="4" x2="20" y1="6" y2="6" />
-            <line x1="4" x2="20" y1="18" y2="18" />
-        </svg>
     );
 }

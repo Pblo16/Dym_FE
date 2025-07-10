@@ -43,7 +43,6 @@ export function fetchData<T = any>(url: string): SuspenderResult<ApiResponse<T>>
 
     const baseUrl = import.meta.env.VITE_STRAPI_URL as string;
     const urlComplete = baseUrl + url;
-    console.log("Fetching data from:", urlComplete);
     try {
         const promise = fetch(urlComplete, {
             signal: controller.signal,
