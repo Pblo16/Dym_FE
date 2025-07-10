@@ -68,6 +68,16 @@ const Detail = () => {
     const { id } = useParams<{ id: string }>();
     const { data: product, error, loading } = useProduct(id);
 
+    // Validación adicional para ID inválido
+    if (!id) {
+        return (
+            <div className="text-center">
+                <h2 className="mb-4 font-bold text-2xl">ID de producto inválido</h2>
+                <p className="text-muted-foreground">No se proporcionó un ID válido para el producto.</p>
+            </div>
+        );
+    }
+
     if (loading) {
         return (
             <div className="flex flex-col justify-center items-center h-96">

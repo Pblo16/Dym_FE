@@ -7,7 +7,10 @@ import Home from './pages/Home';
 import { NotFound } from './components/NotFound';
 import Detail from './pages/products/Detail';
 
-
+/**
+ * Componente principal de la aplicación
+ * Configura el routing y el theme provider
+ */
 function App() {
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
@@ -17,8 +20,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
-            <Route path="*" element={<NotFound />} />
             <Route path="/products/:id" element={<Detail />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
       </BrowserRouter>

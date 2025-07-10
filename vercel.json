@@ -3,13 +3,13 @@
     "trailingSlash": false,
     "rewrites": [
         {
-            "source": "/(.*)",
+            "source": "/((?!api/).*)",
             "destination": "/index.html"
         }
     ],
     "headers": [
         {
-            "source": "/(.*)\\.(js|css|png|jpg|jpeg|gif|svg|woff2|ttf)",
+            "source": "/(.*)\\.(js|css|png|jpg|jpeg|gif|svg|woff2|ttf|ico|webp)",
             "headers": [
                 {
                     "key": "Cache-Control",
