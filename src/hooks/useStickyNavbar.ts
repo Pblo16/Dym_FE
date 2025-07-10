@@ -16,8 +16,10 @@ interface StickyNavbarReturn {
  */
 export function useStickyNavbar(rootMargin: string = "0px"): StickyNavbarReturn {
     const [isSticky, setIsSticky] = useState(false);
-    const navbarRef = useRef<HTMLElement>(null);
-    const sentinelRef = useRef<HTMLDivElement>(null);
+
+    // Los tipos de useRef deben ser exactamente HTMLElement y HTMLDivElement
+    const navbarRef = useRef<HTMLElement>(null) as React.RefObject<HTMLElement>;
+    const sentinelRef = useRef<HTMLDivElement>(null) as React.RefObject<HTMLDivElement>;
 
     /**
      * Callback para el Intersection Observer
