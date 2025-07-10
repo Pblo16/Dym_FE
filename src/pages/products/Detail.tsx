@@ -1,3 +1,4 @@
+import LazyImage from "@/components/LazyImage";
 import type Product from "@/interfaces/product";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -100,10 +101,10 @@ const Detail = () => {
                 {/* Imagen del producto */}
                 <div className="space-y-4">
                     {product.picture && product.picture[0]?.url && (
-                        <img
-                            src={import.meta.env.VITE_STRAPI_URL + product.picture[0].url}
+                        <LazyImage
+                            src={product.picture[0].url}
                             alt={product.name}
-                            className="shadow-lg rounded-lg w-full h-96 object-cover"
+                            className="rounded-md w-full h-full object-cover"
                         />
                     )}
                 </div>
