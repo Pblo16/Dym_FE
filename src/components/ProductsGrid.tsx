@@ -6,7 +6,6 @@ import {
 } from "@/components/ui/card"
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Carousel } from "@/components/Carousel";
-import LazyImage from "./LazyImage";
 import { NavLink } from "react-router";
 
 interface ProductsApiResponse {
@@ -80,7 +79,7 @@ const ProductCard = ({ product }: { product: Product }) => (
         <Card className="shadow-lg pt-0 rounded-md h-96 overflow-hidden">
             {product.picture && product.picture[0].url && (
                 <AspectRatio ratio={16 / 9}>
-                    <LazyImage
+                    <img
                         src={import.meta.env.VITE_STRAPI_URL + product.picture[0].url}
                         alt={product.name}
                         className="rounded-md w-full h-full object-fill"
