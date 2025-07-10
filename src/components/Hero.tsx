@@ -3,30 +3,58 @@ import type Global from "@/interfaces/global";
 
 const apiData = fetchData("/api/global");
 
+/**
+ * Componente para mostrar el contenido textual del hero
+ * @param siteDescription - Descripción del sitio desde la API
+ */
+function HeroContent({ siteDescription }: { siteDescription?: string }) {
+    return (
+        <div className="space-y-4 sm:space-y-6">
+            <p className="font-normal text-gray-300 text-sm uppercase tracking-widest">
+                A Hub for Designers, Developers & Marketers
+            </p>
+            <h1 className="font-normal text-white text-3xl sm:text-4xl lg:text-5xl xl:text-6xl leading-tight">
+                <span className="bg-clip-text bg-gradient-to-r from-cyan-500 to-purple-500 text-transparent">
+                    {siteDescription || 'Unlimited Design'}
+                </span>
+            </h1>
+            <p className="max-w-lg font-normal text-gray-400 text-lg sm:text-xl">
+                Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.
+                Velit officia consequat duis enim velit mollit. Exercitation veniam consequat.
+            </p>
+        </div>
+    );
+}
+
+/**
+ * Componente para mostrar la imagen del hero con responsive design
+ */
+function HeroImage() {
+    return (
+        <div className="flex justify-center lg:justify-end">
+            <img
+                className="w-full max-w-xs sm:max-w-sm lg:max-w-md xl:max-w-lg h-auto object-contain"
+                src="https://landingfoliocom.imgix.net/store/collection/dusk/images/hero/1/3d-illustration.png"
+                alt="3D illustration representing design and development"
+                loading="lazy"
+            />
+        </div>
+    );
+}
+
+/**
+ * Componente Hero principal que muestra el contenido de bienvenida
+ * Obtiene datos de la API global y renderiza el contenido y la imagen de forma responsive
+ */
 export function Hero() {
     const apiResponse = apiData.read();
     const data: Global = apiResponse.data;
 
     return (
-        <section className="py-12 sm:pb-16 lg:pb-20 xl:pb-24">
-            <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-                <div className="relative">
-                    <div className="lg:w-2/3">
-                        <p className="font-normal text-gray-300 text-sm uppercase tracking-widest">A Hub for Designers, Developers & Marketers</p>
-                        <h1 className="mt-6 sm:mt-10 font-normal text-white text-4xl sm:text-5xl lg:text-6xl xl:text-8xl"><span className="bg-clip-text bg-gradient-to-r from-cyan-500 to-purple-500 text-transparent">{data?.siteDescription || 'Unlimited Design'}</span> Inspiration</h1>
-                        <p className="mt-4 sm:mt-8 max-w-lg font-normal text-gray-400 text-xl">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat.</p>
-                        <div className="group inline-flex relative justify-center items-center mt-8 sm:mt-12">
-                            <div className="absolute -inset-px bg-gradient-to-r from-cyan-500 to-purple-500 group-hover:shadow-cyan-500/50 group-hover:shadow-lg rounded-full transition-all duration-200"></div>
-                            <a href="#" title="" className="inline-flex relative justify-center items-center bg-black px-8 py-3 border border-transparent rounded-full font-normal text-white text-base" role="button"> Start Exploring Inspiration </a>
-                        </div>
+        <section className="items-center gap-8 lg:gap-12 grid grid-cols-1 lg:grid-cols-2 mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 max-w-7xl">
+            <HeroContent siteDescription={data?.siteDescription} />
 
-                    </div>
-
-                    <div className="md:top-32 lg:top-0 md:right-0 md:absolute mt-8 md:mt-0">
-                        <img className="mx-auto w-full max-w-xs lg:max-w-lg xl:max-w-xl" src="https://landingfoliocom.imgix.net/store/collection/dusk/images/hero/1/3d-illustration.png" alt="" />
-                    </div>
-                </div>
-            </div>
+            <HeroImage />
         </section>
     );
 }

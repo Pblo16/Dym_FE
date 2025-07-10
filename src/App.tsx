@@ -5,6 +5,7 @@ import Products from '@/pages/products/Products.tsx'
 import Navigation from './components/Navigation';
 import Home from './pages/Home';
 import { NotFound } from './components/NotFound';
+import Detail from './pages/products/Detail';
 
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
             <Route path="*" element={<NotFound />} />
-
+            <Route path="/products/:id" element={<Detail />} />
           </Routes>
         </main>
       </BrowserRouter>

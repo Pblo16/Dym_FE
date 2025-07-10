@@ -7,6 +7,7 @@ import {
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Carousel } from "@/components/Carousel";
 import LazyImage from "./LazyImage";
+import { NavLink } from "react-router";
 
 interface ProductsApiResponse {
     data: Product[];
@@ -75,26 +76,28 @@ const useProducts = (sortOrder: string, limit: number | null) => {
  * @param product - Datos del producto
  */
 const ProductCard = ({ product }: { product: Product }) => (
-    <Card className="shadow-lg pt-0 rounded-md h-96 overflow-hidden">
-        {product.picture && product.picture[0].url && (
-            <AspectRatio ratio={16 / 9}>
-                <LazyImage
-                    src={import.meta.env.VITE_STRAPI_URL + product.picture[0].url}
-                    alt={product.name}
-                    className="rounded-md w-full h-full object-fill"
-                />
-            </AspectRatio>
-        )}
-        <CardContent className="grid grid-cols-[1fr_1fr] h-full">
-            <div className="flex flex-col justify-between pr-4">
-                <h3 className="font-semibold text-lg">{product.name}</h3>
-                <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">{product.description}</p>
-            </div>
-            <div className="flex justify-end items-end">
-                <p className="font-bold text-2xl">${product.price}</p>
-            </div>
-        </CardContent>
-    </Card>
+    <NavLink to={`/products/${product.documentId}`} className="no-underline">
+        <Card className="shadow-lg pt-0 rounded-md h-96 overflow-hidden">
+            {product.picture && product.picture[0].url && (
+                <AspectRatio ratio={16 / 9}>
+                    <LazyImage
+                        src={import.meta.env.VITE_STRAPI_URL + product.picture[0].url}
+                        alt={product.name}
+                        className="rounded-md w-full h-full object-fill"
+                    />
+                </AspectRatio>
+            )}
+            <CardContent className="grid grid-cols-[1fr_1fr] h-full">
+                <div className="flex flex-col justify-between pr-4">
+                    <h3 className="font-semibold text-lg">{product.name}</h3>
+                    <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">{product.description}</p>
+                </div>
+                <div className="flex justify-end items-end">
+                    <p className="font-bold text-2xl">${product.price}</p>
+                </div>
+            </CardContent>
+        </Card>
+    </NavLink>
 );
 
 /**
