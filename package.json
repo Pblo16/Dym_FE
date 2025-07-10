@@ -20,6 +20,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@tailwindcss/vite": "^4.1.11",
     "@uidotdev/usehooks": "2.4.1-experimental.1",
+    "@vercel/react-router": "^1.2.1",
     "axios": "^1.10.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -44,6 +45,7 @@
     "tw-animate-css": "^1.3.5",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.35.1",
-    "vite": "^7.0.3"
+    "vite": "^7.0.3",
+    "vite-plugin-vercel": "^9.0.7"
   }
 }
