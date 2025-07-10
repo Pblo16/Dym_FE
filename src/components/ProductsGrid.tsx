@@ -7,6 +7,7 @@ import {
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Carousel } from "@/components/Carousel";
 import { NavLink } from "react-router";
+import LazyImage from "./LazyImage";
 
 interface ProductsApiResponse {
     data: Product[];
@@ -70,6 +71,8 @@ const useProducts = (sortOrder: string, limit: number | null) => {
     return { data, error, loading };
 };
 
+
+
 /**
  * Componente para renderizar una tarjeta de producto individual
  * @param product - Datos del producto
@@ -77,15 +80,13 @@ const useProducts = (sortOrder: string, limit: number | null) => {
 const ProductCard = ({ product }: { product: Product }) => (
     <NavLink to={`/products/${product.documentId}`} className="no-underline">
         <Card className="shadow-lg pt-0 rounded-md h-96 overflow-hidden">
-            {product.picture && product.picture[0].url && (
-                <AspectRatio ratio={16 / 9}>
-                    <img
-                        src={import.meta.env.VITE_STRAPI_URL + product.picture[0].url}
-                        alt={product.name}
-                        className="rounded-md w-full h-full object-fill"
-                    />
-                </AspectRatio>
-            )}
+            <AspectRatio ratio={16 / 9}>
+                <LazyImage
+                    src={product.picture[0].url}
+                    alt={product.name}
+                    className="rounded-md w-full h-full object-fill"
+                />
+            </AspectRatio>
             <CardContent className="grid grid-cols-[1fr_1fr] h-full">
                 <div className="flex flex-col justify-between pr-4">
                     <h3 className="font-semibold text-lg">{product.name}</h3>
