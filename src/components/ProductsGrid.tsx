@@ -84,7 +84,7 @@ const ProductCard = ({ product }: { product: Product }) => (
                 <LazyImage
                     src={product.picture[0].url}
                     alt={product.name}
-                    className="rounded-md w-full h-full object-fill"
+                    className="rounded-md w-full h-full object-cover"
                 />
             </AspectRatio>
             <CardContent className="grid grid-cols-[1fr_1fr] h-full">
