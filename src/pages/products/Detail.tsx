@@ -1,7 +1,11 @@
 import LazyImage from "@/components/LazyImage";
+import { ProductsGrid } from "@/components/ProductsGrid";
+import { Button } from "@/components/ui/button";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import type Product from "@/interfaces/product";
+import { SquareArrowOutUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { NavLink, useParams } from "react-router";
 
 interface ProductApiResponse {
     data: Product;
@@ -67,7 +71,17 @@ const useProduct = (productId: string | undefined) => {
 const Detail = () => {
     const { id } = useParams<{ id: string }>();
     const { data: product, error, loading } = useProduct(id);
+    const { isMobile, isTablet } = useScreenSize()
 
+    /**
+     * Calcula la cantidad de items por vista según el breakpoint actual
+     * @returns {number} Número de items a mostrar por vista
+     */
+    const calculateItemsPerView = (): number => {
+        if (isMobile) return 1;    // xs, sm
+        if (isTablet) return 2;    // md
+        return 4;                  // lg, xl
+    };
     // Validación adicional para ID inválido
     if (!id) {
         return (
@@ -106,39 +120,59 @@ const Detail = () => {
     }
 
     return (
-        <div className="mx-auto p-6 max-w-4xl">
-            <div className="gap-8 grid grid-cols-1 md:grid-cols-2">
-                {/* Imagen del producto */}
-                <div className="space-y-4">
-                    {product.picture && product.picture[0]?.url && (
-                        <LazyImage
-                            src={product.picture[0].url}
-                            alt={product.name}
-                            className="rounded-md w-full h-full object-cover"
-                        />
-                    )}
-                </div>
-
-                {/* Información del producto */}
-                <div className="space-y-6">
-                    <div>
-                        <h1 className="mb-2 font-bold text-3xl">{product.name}</h1>
-                        <p className="font-semibold text-primary text-2xl">${product.price}</p>
+        <>
+            <div className="mx-auto p-6 max-w-4xl">
+                <div className="gap-8 grid grid-cols-1 md:grid-cols-2">
+                    {/* Imagen del producto */}
+                    <div className="space-y-4">
+                        {product.picture && product.picture[0]?.url && (
+                            <LazyImage
+                                src={product.picture[0].url}
+                                alt={product.name}
+                                className="rounded-md w-full h-full object-cover"
+                            />
+                        )}
                     </div>
 
-                    <div>
-                        <h3 className="mb-2 font-semibold text-lg">Descripción</h3>
-                        <p className="text-muted-foreground leading-relaxed">{product.description}</p>
-                    </div>
+                    {/* Información del producto */}
+                    <div className="space-y-6">
+                        <div>
+                            <h1 className="mb-2 font-bold text-3xl">{product.name}</h1>
+                            <p className="font-semibold text-primary text-2xl">${product.price}</p>
+                        </div>
 
-                    <div className="pt-4">
-                        <button className="bg-primary hover:bg-primary/90 px-6 py-3 rounded-lg font-semibold text-primary-foreground transition-colors">
-                            Añadir al carrito
-                        </button>
+                        <div>
+                            <h3 className="mb-2 font-semibold text-lg">Descripción</h3>
+                            <p className="text-muted-foreground leading-relaxed">{product.description}</p>
+                        </div>
+
+                        <div className="pt-4">
+                            <button className="bg-primary hover:bg-primary/90 px-6 py-3 rounded-lg font-semibold text-primary-foreground transition-colors">
+                                Añadir al carrito
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <section className="flex flex-col items-center gap-8 py-12">
+                <h2 className="self-start mb-8 font-semibold text-2xl">Productos Destacados</h2>
+                <ProductsGrid
+                    sortOrder="createdAt:asc"
+                    limit={6}
+                    displayMode="carousel"
+                    itemsPerView={calculateItemsPerView()}
+                    className="w-full"
+                />
+                <NavLink to="/products" className="">
+                    <Button variant="ghost">
+                        Ver todos los productos
+                        <SquareArrowOutUpRight />
+                        <span className="sr-only">Ver todos los productos</span>
+                    </Button>
+                </NavLink>
+            </section>
+        </>
     );
 };
 

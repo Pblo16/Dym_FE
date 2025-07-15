@@ -56,6 +56,7 @@ const useProducts = (sortOrder: string, limit: number | null) => {
                 });
 
                 const apiResponse: ProductsApiResponse = await response.json();
+
                 setData(apiResponse.data);
             } catch (error) {
                 console.error("Error fetching products:", error);

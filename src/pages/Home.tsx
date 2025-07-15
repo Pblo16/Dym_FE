@@ -1,6 +1,10 @@
 import { Hero } from "@/components/Hero"
 import { ProductsGrid } from "@/components/ProductsGrid"
 import { useScreenSize } from "@/hooks/useScreenSize"
+import About from "./About/About";
+import { Button } from "@/components/ui/button";
+import { NavLink } from "react-router";
+import { SquareArrowOutUpRight } from "lucide-react";
 
 /**
  * Página principal del sitio web
@@ -23,8 +27,8 @@ function Home() {
         <>
             <Hero />
 
-            <section className="py-12">
-                <h2 className="mb-8 font-semibold text-2xl">Productos Destacados</h2>
+            <section className="flex flex-col items-center gap-8 py-12">
+                <h2 className="self-start mb-8 font-semibold text-2xl">Productos Destacados</h2>
                 <ProductsGrid
                     sortOrder="createdAt:asc"
                     limit={6}
@@ -32,7 +36,16 @@ function Home() {
                     itemsPerView={calculateItemsPerView()}
                     className="w-full"
                 />
+                <NavLink to="/products" className="">
+                    <Button variant="ghost">
+                        Ver todos los productos
+                        <SquareArrowOutUpRight />
+                        <span className="sr-only">Ver todos los productos</span>
+                    </Button>
+                </NavLink>
             </section>
+
+            <About />
         </>
     )
 }
