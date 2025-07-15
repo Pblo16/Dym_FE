@@ -4,6 +4,7 @@ import Values from "./components/Values";
 import InfoCard from './components/InfoCard';
 import HeroImage from './components/HeroImage';
 import SpotlightCard from '@/components/Spotligth';
+import Clients from './components/Clients';
 
 /**
  * Página principal de "Acerca de nosotros"
@@ -30,7 +31,7 @@ const About: React.FC = () => {
                 <HeroImage />
             </div>
             <Values />
-
+            <Clients />
         </>
     );
 };

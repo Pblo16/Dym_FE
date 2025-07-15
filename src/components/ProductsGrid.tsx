@@ -111,7 +111,7 @@ export function ProductsGrid({
         <div className="flex flex-col text-center">
             <p className="text-2xl">Error: {error}</p>
             <AspectRatio ratio={1 / 1}>
-                <img src="src/assets/error.webp" alt="Error" className="rounded-md size-96 object-contain" />
+                <img src="src/assets/cart.webp" alt="Error" className="rounded-md size-96 object-contain" />
             </AspectRatio>
         </div>
     );

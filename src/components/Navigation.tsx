@@ -202,7 +202,6 @@ export function Navigation() {
      */
     const renderNavbarRight = () => (
         <div className="flex items-center gap-6">
-            <BaggageClaim size={32} strokeWidth={1} />
             {renderAuthSection()}
         </div>
     );
