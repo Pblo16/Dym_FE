@@ -2,6 +2,7 @@ import { fetchData } from "@/hooks/fetchData";
 import type Global from "@/interfaces/global";
 import LazyImage from "./LazyImage";
 import RotatingText from "./RotatingText";
+import Magnet from './Magnet.tsx'
 
 const apiData = fetchData("/api/global?populate=*");
 
@@ -62,8 +63,9 @@ export function Hero() {
     return (
         <section className="items-center gap-8 lg:gap-12 grid grid-cols-1 lg:grid-cols-2 mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 max-w-7xl">
             <HeroContent siteDescription={data?.siteDescription} />
-
-            <HeroImage img={data?.favicon?.url} />
+            <Magnet padding={1000} disabled={false} magnetStrength={5}>
+                <HeroImage img={data?.favicon?.url} />
+            </Magnet>
         </section>
     );
 }

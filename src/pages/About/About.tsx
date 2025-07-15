@@ -3,6 +3,7 @@ import Values from "./components/Values";
 
 import InfoCard from './components/InfoCard';
 import HeroImage from './components/HeroImage';
+import SpotlightCard from '@/components/Spotligth';
 
 /**
  * Página principal de "Acerca de nosotros"
@@ -19,8 +20,13 @@ const About: React.FC = () => {
             <h1 className="my-8 font-bold text-3xl text-center">Acerca de Nosotros</h1>
 
             <div className="justify-between items-stretch gap-4 grid grid-cols-2 md:grid-cols-3 py-8">
-                <InfoCard title="Visión" content={visionContent} />
-                <InfoCard title="Misión" content={missionContent} />
+                <SpotlightCard className="custom-spotlight-card" spotlightColor="rgba(0, 229, 255, 0.2)">
+
+                    <InfoCard title="Visión" content={visionContent} />
+                </SpotlightCard>
+                <SpotlightCard className="custom-spotlight-card" spotlightColor="rgba(0, 229, 255, 0.2)">
+                    <InfoCard title="Misión" content={missionContent} />
+                </SpotlightCard>
                 <HeroImage />
             </div>
             <Values />
