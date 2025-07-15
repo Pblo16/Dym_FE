@@ -5,7 +5,7 @@
 
 // Configuración base de la API
 export const API_CONFIG = {
-    baseURL: import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337',
+    baseURL: import.meta.env.VITE_STRAPI_URL,
     token: import.meta.env.VITE_STRAPI_TOKEN,
     timeout: 10000, // 10 segundos
 };
