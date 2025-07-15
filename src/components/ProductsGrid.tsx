@@ -8,6 +8,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Carousel } from "@/components/Carousel";
 import { NavLink } from "react-router";
 import LazyImage from "./LazyImage";
+import { apiGet } from "@/api/config";
 
 interface ProductsApiResponse {
     data: Product[];
@@ -29,8 +30,6 @@ interface ProductsGridProps {
     itemsPerView?: number;
 }
 
-
-
 /**
  * Hook personalizado para obtener productos de la API
  * @param sortOrder - Orden de clasificación
@@ -45,18 +44,8 @@ const useProducts = (sortOrder: string, limit: number | null) => {
         const fetchProducts = async () => {
             setLoading(true);
             try {
-                const baseUrl = import.meta.env.VITE_STRAPI_URL as string;
-                const url = `${baseUrl}/api/products?populate=*&sort[0]=${sortOrder}&pagination[limit]=${limit}`;
-
-                const response = await fetch(url, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${import.meta.env.VITE_STRAPI_TOKEN}`,
-                    },
-                });
-
-                const apiResponse: ProductsApiResponse = await response.json();
-
+                const endpoint = `/api/products?populate=*&sort[0]=${sortOrder}&pagination[limit]=${limit}`;
+                const apiResponse: ProductsApiResponse = await apiGet(endpoint);
                 setData(apiResponse.data);
             } catch (error) {
                 console.error("Error fetching products:", error);

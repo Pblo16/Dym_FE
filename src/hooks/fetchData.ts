@@ -1,3 +1,5 @@
+import { apiGet } from '@/api/config';
+
 interface SuspenderResult<T> {
     read: () => T;
 }
@@ -7,6 +9,11 @@ interface ApiResponse<T = any> {
     [key: string]: any;
 }
 
+/**
+ * Crea un suspender para React Suspense
+ * @param promise - Promise a suspender
+ * @returns Objeto con método read para Suspense
+ */
 const getSuspender = <T>(promise: Promise<T>): SuspenderResult<T> => {
     let status: "pending" | "success" | "error" = "pending";
     let response: T;
@@ -28,7 +35,7 @@ const getSuspender = <T>(promise: Promise<T>): SuspenderResult<T> => {
                 throw suspender;
             case "error":
                 console.error("Fetch error:", response);
-                return [] as unknown as T; // Return empty array on error
+                return { data: [] } as unknown as T; // Return empty data structure on error
             default:
                 return response;
         }
@@ -37,36 +44,26 @@ const getSuspender = <T>(promise: Promise<T>): SuspenderResult<T> => {
     return { read };
 };
 
+/**
+ * Hook para fetch de datos con Suspense
+ * Utiliza la configuración centralizada de la API
+ * @param url - Endpoint de la API (relativo, ej: '/api/products')
+ * @returns Suspender con los datos de la API
+ */
 export function fetchData<T = any>(url: string): SuspenderResult<ApiResponse<T>> {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
-
-    const baseUrl = import.meta.env.VITE_STRAPI_URL as string;
-    const urlComplete = baseUrl + url;
     try {
-        const promise = fetch(urlComplete, {
-            signal: controller.signal,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${import.meta.env.VITE_STRAPI_TOKEN}`,
-            },
-        })
-            .then((response) => {
-                clearTimeout(timeoutId);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json() as Promise<ApiResponse<T>>;
-            })
+        const promise = apiGet(url)
+            .then((data) => data as ApiResponse<T>)
             .catch((error) => {
-                clearTimeout(timeoutId);
                 console.error("Fetch error:", error.message);
-                return [] as unknown as ApiResponse<T>; // Return empty array on error
+                // Return empty data structure on error to prevent crashes
+                return { data: [] } as ApiResponse<T>;
             });
 
         return getSuspender(promise);
     } catch (error) {
         console.error("Error fetching data:", error);
-        return getSuspender(Promise.resolve([] as unknown as ApiResponse<T>)); // Return suspender with empty array
+        // Return suspender with empty data structure
+        return getSuspender(Promise.resolve({ data: [] } as ApiResponse<T>));
     }
 }

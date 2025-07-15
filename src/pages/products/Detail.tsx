@@ -6,6 +6,7 @@ import type Product from "@/interfaces/product";
 import { SquareArrowOutUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router";
+import { apiGet } from "@/api/config";
 
 interface ProductApiResponse {
     data: Product;
@@ -34,21 +35,8 @@ const useProduct = (productId: string | undefined) => {
             setError(null);
 
             try {
-                const baseUrl = import.meta.env.VITE_STRAPI_URL as string;
-                const url = `${baseUrl}/api/products/${productId}?populate=*`;
-
-                const response = await fetch(url, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${import.meta.env.VITE_STRAPI_TOKEN}`,
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Error ${response.status}: ${response.statusText}`);
-                }
-
-                const apiResponse: ProductApiResponse = await response.json();
+                const endpoint = `/api/products/${productId}?populate=*`;
+                const apiResponse: ProductApiResponse = await apiGet(endpoint);
                 setData(apiResponse.data);
             } catch (error) {
                 console.error("Error fetching product:", error);
