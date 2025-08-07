@@ -24,9 +24,15 @@ import { Notification } from "@/components/Notification"
 interface QuotationModalProps {
     children?: React.ReactNode;
     onSuccess?: (quotationId: string) => void;
+    currentProduct?: {
+        id: number;
+        name: string;
+        price: number;
+        image?: string;
+    };
 }
 
-export function QuotationModal({ children, onSuccess }: QuotationModalProps) {
+export function QuotationModal({ children, onSuccess, currentProduct }: QuotationModalProps) {
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState<QuotationFormData>({
@@ -42,7 +48,8 @@ export function QuotationModal({ children, onSuccess }: QuotationModalProps) {
         removeItem,
         updateQuantity,
         getTotal,
-        getItemCount
+        getItemCount,
+        addItem
     } = useQuotationStore()
 
     const {
@@ -57,6 +64,50 @@ export function QuotationModal({ children, onSuccess }: QuotationModalProps) {
             ...prev,
             [field]: value
         }))
+    }
+
+    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        // Solo permitir números, espacios, guiones y signos +
+        const value = e.target.value.replace(/[^0-9\s\-\+]/g, '');
+        handleInputChange('customerPhone', value);
+    }
+
+    // Función para añadir el producto actual si no hay productos en el carrito
+    const ensureProductInCart = () => {
+        if (items.length === 0 && currentProduct) {
+            const productToAdd = {
+                id: currentProduct.id,
+                documentId: '',
+                description: null,
+                detailed_description: null,
+                name: currentProduct.name,
+                price: currentProduct.price,
+                createdAt: '',
+                updatedAt: '',
+                publishedAt: '',
+                locale: '',
+                picture: currentProduct.image ? [{
+                    id: 1,
+                    name: 'product-image',
+                    url: currentProduct.image,
+                    width: 0,
+                    height: 0,
+                    hash: '',
+                    ext: '',
+                    mime: '',
+                    size: 0
+                }] : null,
+                localizations: []
+            };
+            addItem(productToAdd, 1);
+        }
+    }
+
+    const handleOpenChange = (newOpen: boolean) => {
+        if (newOpen) {
+            ensureProductInCart();
+        }
+        setOpen(newOpen);
     }
 
     const validateForm = (): boolean => {
@@ -129,7 +180,7 @@ export function QuotationModal({ children, onSuccess }: QuotationModalProps) {
                 </div>
             )}
 
-            <Dialog open={open} onOpenChange={setOpen}>
+            <Dialog open={open} onOpenChange={handleOpenChange}>
                 <DialogTrigger asChild>
                     {children || (
                         <Button className="flex items-center gap-2">
@@ -174,9 +225,6 @@ export function QuotationModal({ children, onSuccess }: QuotationModalProps) {
 
                                             <div className="flex-1 min-w-0">
                                                 <p className="font-medium text-sm truncate">{item.productName}</p>
-                                                <p className="text-xs text-muted-foreground">
-                                                    {formatPrice(item.productPrice)} × {item.quantity}
-                                                </p>
                                             </div>
 
                                             <div className="flex items-center gap-1">
@@ -261,7 +309,7 @@ export function QuotationModal({ children, onSuccess }: QuotationModalProps) {
                                     type="tel"
                                     placeholder="Ej: +34 123 456 789"
                                     value={formData.customerPhone}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('customerPhone', e.target.value)}
+                                    onChange={handlePhoneChange}
                                     required
                                 />
                             </div>

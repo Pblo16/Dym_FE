@@ -106,7 +106,15 @@ const B2BActions = ({ product }: { product: Product }) => {
                 </p>
 
                 <div className="gap-3 grid grid-cols-1 sm:grid-cols-2">
-                    <QuotationModal onSuccess={handleQuotationSuccess}>
+                    <QuotationModal
+                        onSuccess={handleQuotationSuccess}
+                        currentProduct={{
+                            id: product.id,
+                            name: product.name,
+                            price: product.price,
+                            image: product.picture?.[0]?.url
+                        }}
+                    >
                         <Button className="flex items-center gap-2 w-full" variant="default">
                             <FileText className="w-4 h-4" />
                             Solicitar Cotización
