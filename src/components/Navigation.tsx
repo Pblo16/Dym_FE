@@ -4,20 +4,8 @@ import type Global from "@/interfaces/global";
 import { NavLink } from "react-router";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-import { Menu, LogOut, User } from "lucide-react";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { useAuth } from "@/contexts/AuthContext";
-import { useEffect, useState } from "react";
-import { extractAvatarUrl } from "@/api/auth";
+import { Menu } from "lucide-react";
 import LazyImage from "./LazyImage";
 
 const apiData = fetchData("/api/global?populate=*");
@@ -40,37 +28,7 @@ const navigationConfig: NavigationItem[] = [
     { label: "Home", to: "/" },
     { label: "Products", to: "/products" },
     { label: "About", to: "/about" },
-
 ];
-
-/**
- * User dropdown menu configuration
- * @constant userMenuConfig
- */
-const userMenuConfig = [
-    { label: "Profile", to: "/profile", icon: User },
-    { label: "Billing", to: "/billing" },
-    { label: "Team", to: "/team" },
-    { label: "Subscription", to: "/subscription" }
-];
-
-/**
- * Custom hook for managing avatar state in navigation
- * @param user - Current user data
- * @returns Avatar URL state and setter
- */
-const useNavigationAvatar = (user: any) => {
-    const [avatar, setAvatar] = useState<string | null>(null);
-
-    useEffect(() => {
-        if (user) {
-            const currentAvatarUrl = extractAvatarUrl(user);
-            setAvatar(currentAvatarUrl);
-        }
-    }, [user]);
-
-    return avatar;
-};
 
 /**
  * Navigation component with sticky behavior on scroll
@@ -79,8 +37,6 @@ export function Navigation() {
     const apiResponse = apiData.read();
     const data: Global = apiResponse.data;
     const { isSticky, navbarRef, sentinelRef } = useStickyNavbar("-1px");
-    const { user, logout, isAuthenticated } = useAuth();
-    const avatar = useNavigationAvatar(user);
 
     /**
      * Generates common navigation link className
@@ -130,79 +86,11 @@ export function Navigation() {
         items.map(item => renderNavigationItem(item, className));
 
     /**
-     * Renders authenticated user dropdown menu items
-     * @returns JSX elements for user menu items
-     */
-    const renderUserMenuItems = () =>
-        userMenuConfig.map(item => (
-            <DropdownMenuItem key={item.label}>
-                <NavLink
-                    to={item.to}
-                    className={item.icon ? "flex items-center gap-2" : ""}
-                >
-                    {item.icon && <item.icon size={16} />}
-                    {item.label}
-                </NavLink>
-            </DropdownMenuItem>
-        ));
-
-    /**
-     * Renders authenticated user menu or login/signup buttons
-     * @returns JSX element for authentication section
-     */
-    const renderAuthSection = () => {
-        if (isAuthenticated && user) {
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger>
-                        <Avatar>
-                            {avatar ? (
-                                <AvatarImage src={avatar} />
-                            ) : (
-                                <AvatarFallback>
-                                    {user.username.charAt(0).toUpperCase()}
-                                </AvatarFallback>
-                            )}
-                        </Avatar>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        <DropdownMenuLabel>
-                            {user.username}
-                        </DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        {renderUserMenuItems()}
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                            onClick={logout}
-                            className="flex items-center gap-2 text-red-600 focus:text-red-600"
-                        >
-                            <LogOut size={16} />
-                            Logout
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        }
-
-        return (
-            <div className="flex items-center gap-2">
-                <Button variant="outline" asChild>
-                    <NavLink to="/login">Login</NavLink>
-                </Button>
-                <Button asChild>
-                    <NavLink to="/signup">Sign Up</NavLink>
-                </Button>
-            </div>
-        );
-    };
-
-    /**
-     * Renders the navbar right section with cart and auth
+     * Renders the navbar right section
      * @returns JSX element for navbar right section
      */
     const renderNavbarRight = () => (
         <div className="flex items-center gap-6">
-            {renderAuthSection()}
         </div>
     );
 
@@ -232,7 +120,6 @@ export function Navigation() {
                 <SheetContent side="right">
                     <div className="gap-4 grid p-4 w-[200px]">
                         {renderNavigationItems(navigationConfig, getLinkClassName())}
-                        <Button variant="outline">Get started</Button>
                     </div>
                 </SheetContent>
             </Sheet>

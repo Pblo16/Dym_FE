@@ -6,38 +6,31 @@ import Navigation from './components/Navigation';
 import Home from './pages/Home';
 import { NotFound } from './components/NotFound';
 import Detail from './pages/products/Detail';
-import { AuthProvider } from '@/contexts/AuthContext';
-import Login from '@/pages/auth/Login';
-import Signup from '@/pages/auth/Signup';
-import Profile from './pages/profile/Profile';
 import About from './pages/About/About';
 import Footer from './components/Footer';
+import QuotationPage from './pages/QuotationPage';
 /**
  * Componente principal de la aplicación
- * Configura el routing, theme provider y authentication provider
+ * Configura el routing y theme provider
  */
 function App() {
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <AuthProvider>
-        <BrowserRouter>
-          <Navigation />
-          <main className='mx-4 md:mx-auto mt-4 md:px-8 max-w-7xl'>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/products/:id" element={<Detail />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/about" element={<About />} />
+      <BrowserRouter>
+        <Navigation />
+        <main className='mx-4 md:mx-auto mt-4 md:px-8 max-w-7xl'>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/products/:id" element={<Detail />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/quotation/:id" element={<QuotationPage />} />
 
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-          <Footer />
-        </BrowserRouter>
-      </AuthProvider>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
+        <Footer />
+      </BrowserRouter>
     </ThemeProvider>
   )
 }

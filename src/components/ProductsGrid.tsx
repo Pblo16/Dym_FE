@@ -72,7 +72,7 @@ const ProductCard = ({ product }: { product: Product }) => (
         <Card className="shadow-lg pt-0 rounded-md h-96 overflow-hidden">
             <AspectRatio ratio={16 / 9}>
                 <LazyImage
-                    src={product.picture[0].url}
+                    src={product.picture && product.picture.length > 0 ? product.picture[0].url : '/vite.svg'}
                     alt={product.name}
                     className="rounded-md w-full h-full object-cover"
                 />

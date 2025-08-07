@@ -39,6 +39,6 @@ export default interface Product {
         createdAt?: string;
         updatedAt?: string;
         publishedAt?: string;
-    }[];
+    }[] | null;
     localizations: any[];
 }

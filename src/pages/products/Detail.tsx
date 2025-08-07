@@ -5,10 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import type Product from "@/interfaces/product";
-import { SquareArrowOutUpRight, Phone, Mail, FileText, Package, Users } from "lucide-react";
+import { SquareArrowOutUpRight, Phone, Mail, FileText, Package, Users, ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router";
+import { NavLink, useParams, useNavigate } from "react-router";
 import { apiGet } from "@/api/config";
+import { QuotationModal } from "@/components/QuotationModal";
+import { useQuotationStore } from "@/stores/quotationStore";
 
 interface ProductApiResponse {
     data: Product;
@@ -77,45 +79,76 @@ const LoadingState = () => (
 );
 
 
-const B2BActions = () => (
-    <Card>
-        <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-                <Users className="w-5 h-5" />
-                Solicitar Información Comercial
-            </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-            <p className="text-muted-foreground text-sm">
-                Conecta con nuestro equipo comercial para obtener cotizaciones personalizadas,
-                descuentos por volumen y condiciones especiales para tu empresa.
-            </p>
+const B2BActions = ({ product }: { product: Product }) => {
+    const navigate = useNavigate();
+    const { addItem, getItemCount } = useQuotationStore();
 
-            <div className="gap-3 grid grid-cols-1 sm:grid-cols-2">
-                <Button className="flex items-center gap-2" variant="default">
-                    <FileText className="w-4 h-4" />
-                    Solicitar Cotización
-                </Button>
+    const handleQuotationSuccess = (quotationId: string) => {
+        navigate(`/quotation/${quotationId}`);
+    };
 
-                <Button className="flex items-center gap-2" variant="outline">
-                    <Phone className="w-4 h-4" />
-                    Contactar Asesor
-                </Button>
-            </div>
+    const handleAddToQuotation = () => {
+        addItem(product, 1);
+    };
 
-            <div className="pt-2 border-t">
-                <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                    <Mail className="w-4 h-4" />
-                    <span>ventas@empresa.com</span>
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                    <Users className="w-5 h-5" />
+                    Solicitar Información Comercial
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <p className="text-muted-foreground text-sm">
+                    Conecta con nuestro equipo comercial para obtener cotizaciones personalizadas,
+                    descuentos por volumen y condiciones especiales para tu empresa.
+                </p>
+
+                <div className="gap-3 grid grid-cols-1 sm:grid-cols-2">
+                    <QuotationModal onSuccess={handleQuotationSuccess}>
+                        <Button className="flex items-center gap-2 w-full" variant="default">
+                            <FileText className="w-4 h-4" />
+                            Solicitar Cotización
+                            {getItemCount() > 0 && (
+                                <Badge variant="secondary" className="ml-1">
+                                    {getItemCount()}
+                                </Badge>
+                            )}
+                        </Button>
+                    </QuotationModal>
+
+                    <Button
+                        className="flex items-center gap-2 w-full"
+                        variant="outline"
+                        onClick={handleAddToQuotation}
+                    >
+                        <ShoppingCart className="w-4 h-4" />
+                        Añadir a Cotización
+                    </Button>
                 </div>
-                <div className="flex items-center gap-2 mt-1 text-muted-foreground text-sm">
-                    <Phone className="w-4 h-4" />
-                    <span>+1 (555) 123-4567</span>
+
+                <div className="gap-3 grid grid-cols-1">
+                    <Button className="flex items-center gap-2" variant="outline">
+                        <Phone className="w-4 h-4" />
+                        Contactar Asesor
+                    </Button>
                 </div>
-            </div>
-        </CardContent>
-    </Card>
-);
+
+                <div className="pt-2 border-t">
+                    <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                        <Mail className="w-4 h-4" />
+                        <span>ventas@empresa.com</span>
+                    </div>
+                    <div className="flex items-center gap-2 mt-1 text-muted-foreground text-sm">
+                        <Phone className="w-4 h-4" />
+                        <span>+1 (555) 123-4567</span>
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
+    );
+};
 
 /**
  * Componente para mostrar información técnica del producto
@@ -183,7 +216,7 @@ const ProductDisplay = ({ product }: { product: Product }) => (
                 </div>
 
                 <TechnicalInfo product={product} />
-                <B2BActions />
+                <B2BActions product={product} />
             </div>
         </div>
     </div>

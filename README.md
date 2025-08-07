@@ -90,7 +90,6 @@ src/
 
 ## 🔧 Características
 
-- ✅ Autenticación de usuarios
 - ✅ Catálogo de productos con filtros
 - ✅ Detalles de productos
 - ✅ Diseño responsive
